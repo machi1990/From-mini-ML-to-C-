@@ -1,0 +1,211 @@
+#include "runtime.h"
+
+
+MLvalue *MLlr = NULL, *MLnil=NULL; 
+MLvalue *MLtrue = NULL, *MLfalse = NULL;
+ 
+MLnil = new_list (NULL,NULL);
+MLlr =  new_unit (); 
+MLtrue = new_bool(true);
+MLfalse = new_bool(false);
+
+
+MLint * addInt (MLint * gauche, MLint* droite) {
+  MLint* result=NULL;
+  if(gauche!=NULL && droite! NULL)
+    {
+      int g = gauche->val;
+      int d = droite-> val;
+      result = New_MLint( d+g);
+     }
+  return result;
+ }
+ 
+
+MLint * subInt (MLint * gauche, MLint* droite) {
+  MLint* result=NULL;
+  if(gauche!=NULL && droite! NULL)
+    {
+      int g = gauche->val;
+      int d = droite-> val;
+      result = New_MLint( g-d);
+     }
+  return result;
+ }
+
+
+MLint * multInt (MLint * gauche, MLint* droite) {
+  MLint* result=NULL;
+  if(gauche!=NULL && droite! NULL)
+    {
+      int g = gauche->val;
+      int d = droite-> val;
+      result = New_MLint( d*g);
+     }
+  return result;
+ }
+
+
+MLint * divInt (MLint * gauche, MLint* droite) {
+  MLint* result=NULL;
+  if(gauche!=NULL && droite! NULL)
+    {
+      int g = gauche->val;
+      int d = droite-> val;
+      result = New_MLint( g / d);  // Division by zero not treated yet
+     }
+  return result;
+ }
+
+MLbool* equals (MLvalue* gauche, MLvalue* droite) {
+  if (gauche != NULL && droite != NULL){
+    if(gauche->kind_ != droite->kind_)
+       return MLfalse;
+    else
+      if(gauche->value  != droite->value)
+	return MLfalse;
+      else
+	return MLtrue;
+  }
+  else 
+   return NULL;
+ }
+
+MLstring* MLconcat (MLstring* gauche , MLstring* droite) {
+  char* first_string=NULL;
+  char* second_string=NULL; 
+  if(gauche!=NULL)
+    first_string = gauche ->val;
+  if (droite !=NULL)
+    second_string = droite->val;
+  
+  if (first_string!=NULL)
+    return New_MLstring (strcat(first_string, second_string));
+  else
+    return droite;
+}
+
+MLbool* MLltint (MLint* gauche, MLint * droite ){
+  if (gauche!=NULL && droite!=NULL) 
+    {
+      int g= gauche->val;
+      int d = droite-> val;
+      if(g<d)
+	return MLtrue;
+      return MLfalse;
+    } 
+  else
+    return NULL;
+ }
+MLbool* MLletint  (MLint* gauche, MLint * droite ){
+  if (gauche!=NULL && droite!=NULL) 
+    {
+      int g= gauche->val;
+      int d = droite-> val;
+      if(g<=d)
+	return MLtrue;
+      return MLfalse;
+    } 
+  else
+    return NULL;
+ }
+MLbool* MLgtint (MLint*, MLint*); (MLint* gauche, MLint * droite ){
+  if (gauche!=NULL && droite!=NULL) 
+    {
+      int g= gauche->val;
+      int d = droite-> val;
+      if(g>d)
+	return MLtrue;
+      return MLfalse;
+    } 
+  else
+    return NULL;
+ }
+MLbool* MLgeint  (MLint* gauche, MLint * droite ){
+  if (gauche!=NULL && droite!=NULL) 
+    {
+      int g= gauche->val;
+      int d = droite-> val;
+      if(g>=d)
+	return MLtrue;
+      return MLfalse;
+    } 
+  else
+    return NULL;
+ }
+
+//********************** [MLruntime] **********************
+
+//**** [Those Tests Will Help You To Implement prod.ml] ****
+int main() {		
+	// first you should creat an object "MLruntime"
+
+	// then you can use:
+	// "MLruntime->MLlrp" instead of "MLruntime.MLlrp"
+	// "MLruntime->MLtrue" instead of "MLruntime.MLtrue"
+	// "MLruntime->MLfalse" instead of "MLruntime.MLfalse"
+	// and so on...
+   
+	// Example for MLunit
+	
+
+	
+
+	MLunit *monMLunit = MLlr->value.asUnit;
+	
+	printf("Expected result: init value = 0 and print() = ()\n");
+	int initValueOfMLunit = monMLunit->MLaccess(monMLunit);
+	printf("Printing MLunit init value: %d\n", initValueOfMLunit);
+	printf("Printing MLunit value: ");
+        monMLunit->print();
+        puts("\n");
+
+	// Example1 for MLbool
+
+     
+	MLbool *monTrueMLbool = MLtrue->value.asBoolean;
+	printf("Expected result: init value = 1 and print() = true\n");
+	bool initValueOfTrueMLbool = monTrueMLbool->MLaccess(monTrueMLbool);
+	printf("Printing MLbool init value: %d\n", initValueOfTrueMLbool);
+	printf("Printing MLbool value: ");
+    	monTrueMLbool->print(monTrueMLbool);
+    	puts("\n");
+       
+	// Example2 for MLbool
+	MLbool *monFalseMLbool = MLfalse->value.asBoolean;
+	printf("Expected result: init value = 0 and print() = false\n");
+	bool initValueOfFalseMLbool = monFalseMLbool->MLaccess(monFalseMLbool);
+	printf("Printing MLbool init value: %d\n", initValueOfFalseMLbool);
+	printf("Printing MLbool value: ");
+        monFalseMLbool->print(monFalseMLbool);
+        puts("\n");
+
+	// Example for MLint
+	MLint *monMLint = New_MLint(5);
+	printf("Expected result: MLaccess() = 5 and print() = 5\n");
+	int getInt = monMLint->MLaccess(monMLint);
+	printf("Printing MLint value using MLaccess(): %d\n", getInt);
+	printf("Printing MLint value using print(): ");
+        monMLint->print(monMLint);
+        puts("\n");
+
+	// Example for MLdouble
+	MLdouble *monDouble = New_MLdouble(16.3);
+	printf("Expected result: MLaccess() = 16.3 and print() = 16.3\n");
+	double getDouble = monDouble->MLaccess(monDouble);
+	printf("Printing MLint value using MLaccess(): %lf\n", getDouble);
+	printf("Printing MLint value using print(): ");
+    monDouble->print(monDouble);
+    puts("\n");
+
+	// Example for MLstring
+	MLstring *monString = New_MLstring("Why So Serious?");
+	printf("Expected result: MLaccess() = Why So Serious? and print() = Why So Serious?\n");
+	char* getString = monString->MLaccess(monString);
+	printf("Printing MLint value using MLaccess(): %s\n", getString);
+	printf("Printing MLint value using print(): ");
+    monString->print(monString);
+    puts("\n");
+
+        return 0;
+}
