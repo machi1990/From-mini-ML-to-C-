@@ -7,17 +7,19 @@ void MLunit_print(void* val ) {
 
 void MLbool_print(MLvalue *value) {
 	if(value == NULL) 
-          return;	
+          return;
+          
 	if(value->kind_ == boolean)
-	if (value->value.asBoolean == true) 		
-	        printf("true");
-	else
-		printf("false");
+		if (value->value.asBoolean == true) 		
+		  	printf("true");
+		else
+			printf("false");
 }
 
 void MLint_print(MLvalue *value) {
 	if(value == NULL) 
           return;        
+          
 	if (value->kind_ == integer)
             printf("%d", value->value.asInt);
 }
@@ -34,14 +36,16 @@ void MLdouble_print(MLvalue *v) {
 void MLstring_print(MLvalue *chaine) {
         if(chaine == NULL) 
           return; 
+          
         if(chaine->kind_ == stringz)
-        printf("%s", chaine->value.asString);
+          printf("%s", chaine->value.asString);
 }
 
 MLvalue* get_tail (MLvalue* invoker,MLvalue* liste) {
   if (liste != NULL){
     if (liste->kind_ != list )
 	return NULL;
+	
     MLlist* temp = liste->value.asList; 
     return temp->next;
    }
