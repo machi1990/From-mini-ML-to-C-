@@ -40,10 +40,16 @@
  struct MLlist;
  struct MLfun;
   
-typedef enum MLkind  { unit=1 , integer,
-		       real   , stringz,
-		       boolean, pair,
-		       list ,   function} MLkind;
+typedef enum MLkind  {  unit=1 , 
+			integer,
+			real   , 
+			stringz,
+		        boolean, 
+		        pair,
+		        list ,   
+		        function
+	
+} MLkind;
 
 typedef enum bool { 
 	false =0, 
