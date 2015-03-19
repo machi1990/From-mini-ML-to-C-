@@ -19,7 +19,6 @@ void MLbool_print(MLvalue *value) {
 void MLint_print(MLvalue *value) {
 	if(value == NULL) 
           return;        
-          
 	if (value->kind_ == integer)
             printf("%d", value->value.asInt);
 }
@@ -36,223 +35,224 @@ void MLdouble_print(MLvalue *v) {
 void MLstring_print(MLvalue *chaine) {
         if(chaine == NULL) 
           return; 
-          
         if(chaine->kind_ == stringz)
           printf("%s", chaine->value.asString);
 }
 
 MLvalue* get_tail (MLvalue* invoker,MLvalue* liste) {
-  if (liste != NULL){
-    if (liste->kind_ != list )
-	return NULL;
-	
-    MLlist* temp = liste->value.asList; 
-    return temp->next;
-   }
-  else
-    return NULL; 
+	 if (liste != NULL){
+    		if (liste->kind_ != list )
+			return NULL;
+    		MLlist* temp = liste->value.asList; 
+		  return temp->next;
+	 }
+	 else
+		  return NULL; 
 }
 
 
 /* To be changed*/
 
  MLvalue* access_value (MLvalue* invoker, MLvalue* liste) {	
-  if(liste !=NULL) {
-    if (liste->kind_ != list )
-	return NULL;
-    MLlist* temp = liste->value.asList; 
-    return temp->head;
-    }  
-  return NULL;
+	 if(liste !=NULL) {
+		   if (liste->kind_ != list )
+			return NULL;
+		   MLlist* temp = liste->value.asList; 
+    		   return temp->head;
+	  }  
+	 return NULL;
   }
 
 void print_list (MLvalue *listes) {
-  if (listes == NULL )
-    return;
-  else {
-    if(listes->kind_ != list)
-       return; 
-    MLlist* liste = listes->value.asList;	
-    MLvalue* value = liste->head;
-    if (value == NULL) {
-      printf("[]"); 
-      return;
-     }
-    value->print (value);
-    printf (" : ");
-    if (liste->next != NULL)
-      (liste->next)->print (liste->next);
-   }
+	  if (listes == NULL )
+    	  	return;
+  	 else {
+		 if(listes->kind_ != list)
+		     return; 
+       
+		 MLlist* liste = listes->value.asList;	
+		  MLvalue* value = liste->head;
+  
+		  if (value == NULL) {
+			 printf("[]"); 
+			  return;
+		   }
+     
+		 value->print (value);
+		 printf (" : ");
+		 if (liste->next != NULL)
+		 (liste->next)->print (liste->next);
+	 }
 } 
 
 /* To be changed */
 MLlist* initialize_list (MLvalue* val, MLvalue* next) {
-  if (next!=NULL)
-    { 
-      if(next->kind_ == list)
-	{
-	  // Type control over here; Lists contain only member of the same type
-          MLvalue* header = next->value.asList->head;
-          if(header !=NULL && val != NULL)
-          if (header->kind_ != val->kind_ )
-	    return NULL;
-          }
-      else {
-        printf (" List contain elements of same type");
-	return NULL;
+  	if (next!=NULL)
+	 { 
+		  if(next->kind_ == list)
+		{
+		  // Type control over here; Lists contain only member of the same type
+        		  MLvalue* header = next->value.asList->head;
+        		 if(header !=NULL && val != NULL)
+        			  if (header->kind_ != val->kind_ )
+				  return NULL;
+          	}
+		 else {
+			printf (" List contain elements of same type");
+			return NULL;
         }
       }
-  MLlist* list = (MLlist*)malloc (sizeof(MLlist));
-  list->head = val; 
-  list->next = next;
-  return list;
+  	MLlist* list = (MLlist*)malloc (sizeof(MLlist));
+	 list->head = val; 
+	 list->next = next;
+	 return list;
 }
 
 MLvalue* get_first (MLvalue* invoker, MLvalue *paire ) {
- if(paire==NULL)
-    return NULL;
- if (paire->kind_ != pair)
-    return NULL;
- else
-   return paire->value.asPair->first; 
+ 	if(paire==NULL)
+		  return NULL;
+ 	if (paire->kind_ != pair)
+		 return NULL;
+ 	else
+		  return paire->value.asPair->first; 
  }
 
 MLvalue* get_second (MLvalue* invoker , MLvalue *paire ) {
- if(paire==NULL)
-    return NULL;
- if (paire->kind_ != pair)
-    return NULL;
- else
-   return paire->value.asPair->second; 
+	 if(paire==NULL)
+		 return NULL;
+ 	if (paire->kind_ != pair)
+    		return NULL;
+	 else
+		 return paire->value.asPair->second; 
  }
 
 void print_pair (MLvalue *paire ) {
-  if(paire == NULL)
-    return;
-  else 
-    {
-      if (paire->kind_ != pair)
-	  return;		
-      printf ("(");
+  	if(paire == NULL)
+		 return;
+	 else 
+	  {
+		if (paire->kind_ != pair)
+			  return;		
+      		printf ("(");
       
-      MLvalue* premier=  paire->value.asPair->first;
-      premier->print(premier);
-      printf (" , ");
-      MLvalue* deuxieme =  paire->value.asPair->second;
-      deuxieme->print (deuxieme);
-      printf (" )");  
- }
+      		MLvalue* premier=  paire->value.asPair->first;
+      		premier->print(premier);
+      		printf (" , ");
+		MLvalue* deuxieme =  paire->value.asPair->second;
+		deuxieme->print (deuxieme);
+      		printf (" )");  
+ 	}
 }
 
 
 MLpair* initilize_pair (MLvalue* value1, MLvalue* value2 ) {
-  MLpair* pair = (MLpair*) malloc (sizeof(MLpair));
-  pair->first = value1;
-  pair->second= value2;
-  return pair;
+	MLpair* pair = (MLpair*) malloc (sizeof(MLpair));
+  	pair->first = value1;
+  	pair->second= value2;
+	return pair;
  }
 
 void addenv (MLfun *fun, MLvalue* envi, MLvalue *a) {
-int i = 0;
-if ( fun == NULL)
- return;
+	int i = 0;
+	if ( fun == NULL)
+ 		return;
 
-for (; i < fun->MLcounter; i++) {
-    fun->env[i]= envi[i];
- }
-  fun->env[i] = *a;
-  fun->MLcounter +=1;
+	for (; i < fun->MLcounter; i++) {
+    		fun->env[i]= envi[i];
+	 }
+	 fun->env[i] = *a;
+	 fun->MLcounter +=1;
 }  
 
 void print_fun (MLvalue* funct) {
-  if (funct == NULL)
-     return;
-  else if (funct->kind_ != function)
-     return;
-  MLfun* fun = funct->value.asFun;     
-  if (fun== NULL)
-    return;
-  printf("<fun> [");
-  int i = 0;
-  MLvalue*  envs = fun->env;
-  MLvalue* environ;
-  for (; i < fun->MLcounter; i++ ) {
-    environ =&envs[i];
-    environ->print ( environ);
-  }
-  printf ("]");
+	 if (funct == NULL)
+		   return;
+	 else if (funct->kind_ != function)
+		   return;
+	 MLfun* fun = funct->value.asFun;     
+	 if (fun== NULL)
+		  return;
+	  printf("<fun> [");
+  	  int i = 0;
+  	  MLvalue*  envs = fun->env;
+  	  MLvalue* environ;
+	  for (; i < fun->MLcounter; i++ ) {
+    		environ =&envs[i];
+    		environ->print ( environ);
+  		}
+  	printf ("]");
 }
  
 MLfun* initialise_fun () {
-  MLfun  *fun = (MLfun*)malloc (sizeof (MLfun));
-  fun->MLcounter =0;
-  fun->MLaddenv = &addenv;
-  return fun;
+  	MLfun  *fun = (MLfun*)malloc (sizeof (MLfun));
+  	fun->MLcounter =0;
+  	fun->MLaddenv = &addenv;
+  	return fun;
 }
 
 MLfun* initialize_fun (int n) {
-  MLfun * fun = initialise_fun();
-  MLvalue* values= (MLvalue*) malloc (n * sizeof ( MLvalue));
-  fun->env= values;
-  return fun; 
+	 MLfun * fun = initialise_fun();
+	 MLvalue* values= (MLvalue*) malloc (n * sizeof ( MLvalue));
+	 fun->env= values;
+	 return fun; 
  }
 
 MLvalue* new_unit (){
-  MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
-  v->kind_ = unit;
-  v->value.asUnit = 0;
-  v->print = &MLunit_print;
-  return v;
+	 MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
+	 v->kind_ = unit;
+	 v->value.asUnit = 0;
+	 v->print = &MLunit_print;
+	 return v;
 }
 
 MLvalue* new_bool (bool val) {
-  MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
-  v->kind_ = boolean;
-  v->value.asBoolean = val;
-  v->print = &MLbool_print;
-  return v;
+  	MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
+  	v->kind_ = boolean;
+	v->value.asBoolean = val;
+  	v->print = &MLbool_print;
+  	return v;
  }
 
 MLvalue* new_int (int val) {
-  MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
-  v->kind_ = integer;
-  v->value.asInt = val;
-  v->print = &MLint_print;
-  return v;
+  	MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
+  	v->kind_ = integer;
+  	v->value.asInt = val;
+  	v->print = &MLint_print;
+  	return v;
 }
 
 MLvalue* new_double ( double val ) {
-  MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
-  v->kind_ = real;
-  v->value.asDouble = val;
-  v->print = &MLdouble_print;
-  return v;
+  	MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
+  	v->kind_ = real;
+  	v->value.asDouble = val;
+	v->print = &MLdouble_print;
+  	return v;
 }
 
 MLvalue* new_string (char *chaine) {
-  MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
-  v->kind_ = stringz;
-  v->value.asString = chaine;
-  v->print = &MLstring_print;
-  return v;
+  	MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
+  	v->kind_ = stringz;
+  	v->value.asString = chaine;
+  	v->print = &MLstring_print;
+  	return v;
  }
 
 MLvalue* new_pair (MLvalue* v0 , MLvalue* v1)  {
-  MLpair *couple =initilize_pair (v0,v1);
-  MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
-  v->kind_ = pair;
-  v->value.asPair = couple;
-  v->print = &print_pair;
-  return v;
+	MLpair *couple =initilize_pair (v0,v1);
+  	MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
+  	v->kind_ = pair;
+  	v->value.asPair = couple;
+  	v->print = &print_pair;
+  	return v;
  }
 
 MLvalue* new_list (MLvalue* v0, MLvalue* v1)  {
-  MLlist* liste = initialize_list (v0,v1);
-  MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
-  v->kind_ = list;
-  v->value.asPair = liste;
-  v->print = &print_list;
-  return v;
+  	MLlist* liste = initialize_list (v0,v1);
+  	MLvalue* v= (MLvalue*)malloc(sizeof(MLvalue));
+	v->kind_ = list;
+  	v->value.asPair = liste;
+  	v->print = &print_list;
+  	return v;
  }
 
 MLvalue * MLaddInt (MLvalue * gauche, MLvalue* droite) {
