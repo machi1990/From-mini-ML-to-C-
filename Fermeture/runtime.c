@@ -364,85 +364,86 @@ int checkSimilarity(MLvalue* gauche, MLvalue* droite)
 
 
 MLvalue* MLequals (MLvalue* gauche, MLvalue* droite) {
-  int same;
-  if (gauche != NULL && droite != NULL){
-    if(gauche->kind_ != droite->kind_)
-       return MLfalse;
-    else
-      same = checkSimilarity(gauche, droite);
-	if(same)
-		return MLtrue;
-	return MLfalse;
-  }
-  else 
-   return NULL;
+  	int same;
+  	if (gauche != NULL && droite != NULL){
+    		if(gauche->kind_ != droite->kind_)
+			 return MLfalse;
+		  else
+			 same = checkSimilarity(gauche, droite);
+			if(same)
+				return MLtrue;
+			return MLfalse;
+  	}
+  	else 
+   	return NULL;
  }
 
 MLvalue* MLconcat (MLvalue* gauche , MLvalue* droite) {
-  char* first_string=NULL;
-  char* second_string=NULL; 
-  if(gauche!=NULL)
-    first_string = gauche->value.asString;
-  if (droite !=NULL)
-    second_string = droite->value.asString;
+	char* first_string=NULL;
+  	char* second_string=NULL; 
+  	if(gauche!=NULL)
+    		first_string = gauche->value.asString;
+  		if (droite !=NULL)
+    			second_string = droite->value.asString;
   
-  if ( first_string != NULL ) {	
-  	char * result = (char*)malloc(strlen(first_string)+ strlen(second_string)+1);	
-	 memcpy ( result, first_string, strlen(first_string)+1 );
-	return new_string (strcat(result, second_string));
+		 if ( first_string != NULL ) {	
+  			char * result = (char*)malloc(strlen(first_string)+ strlen(second_string)+1);	
+	 		memcpy ( result, first_string, strlen(first_string)+1 );
+			return new_string (strcat(result, second_string));
 	}
-else
-  return droite;
+	else
+  		return droite;
 }
 
 MLvalue* MLltint (MLvalue* gauche, MLvalue * droite ){
-  if (gauche!=NULL && droite!=NULL) 
-    {
-      int g= gauche->value.asInt;
-      int d = droite-> value.asInt;
-      if(g<d)
-	return MLtrue;
-      return MLfalse;
-    } 
-  else
-    return NULL;
+  	if (gauche!=NULL && droite!=NULL) 
+	 {
+      		int g= gauche->value.asInt;
+      		int d = droite-> value.asInt;
+      		if(g<d)
+			return MLtrue;
+      		return MLfalse;
+	 } 
+  	else
+    		return NULL;
  }
 MLvalue* MLletint  (MLvalue* gauche, MLvalue * droite ){
-  if (gauche!=NULL && droite!=NULL) 
-    {
-      int g= gauche->value.asInt;
-      int d = droite->value.asInt;
-      if(g<=d)
-	return MLtrue;
-      return MLfalse;
-    } 
-  else
-    return NULL;
+  	if (gauche!=NULL && droite!=NULL) 
+    	{
+      		int g= gauche->value.asInt;
+      		int d = droite->value.asInt;
+      		if(g<=d)
+			return MLtrue;
+      		return MLfalse;
+    	} 
+  	else
+		 return NULL;
  }
 
 MLvalue* MLgtint  (MLvalue* gauche, MLvalue * droite ){
-  if (gauche!=NULL && droite!=NULL) 
-    {
-      int g= gauche->value.asInt;
-      int d = droite-> value.asInt;
-      if(g>d)
-	return MLtrue;
-      return MLfalse;
-    } 
-  else
-    return NULL;
+  	if (gauche!=NULL && droite!=NULL) 
+	  {
+		  int g= gauche->value.asInt;
+		  int d = droite-> value.asInt;
+      		  if(g>d)
+			return MLtrue;
+      			return MLfalse;
+    	} 
+  	else
+    		return NULL;
  }
+ 
 MLvalue* MLgeint  (MLvalue* gauche, MLvalue * droite ){
-  if (gauche!=NULL && droite!=NULL) 
-    {
-      int g= gauche->value.asInt;
-      int d = droite->value.asInt;
-      if(g>=d)
-	return MLtrue;
-      return MLfalse;
-    } 
-  else
-    return NULL;
+  	if (gauche!=NULL && droite!=NULL) 
+    	{
+      		int g= gauche->value.asInt;
+      		int d = droite->value.asInt;
+      		if(g>=d)
+			return MLtrue;
+      		return MLfalse;
+    	} 
+	 else
+    		return NULL;
  }
 
 MLvalue* MLprint(MLvalue* x)
@@ -453,42 +454,42 @@ MLvalue* MLprint(MLvalue* x)
 }
 
 MLvalue* initialise_head () {
-  MLvalue *v = (MLvalue*)malloc(sizeof (MLvalue));
-  v->kind_ = function; 
-  MLfun* prim = initialise_fun();
-  prim->invoke = &access_value;
-  v->value.asFun = prim;
-  v->print = &print_fun;	
-  return v; 
+  	MLvalue *v = (MLvalue*)malloc(sizeof (MLvalue));
+  	v->kind_ = function; 
+  	MLfun* prim = initialise_fun();
+  	prim->invoke = &access_value;
+  	v->value.asFun = prim;
+  	v->print = &print_fun;	
+  	return v; 
 }
 
 MLvalue* initialise_tail () {
-  MLvalue *v = (MLvalue*)malloc(sizeof (MLvalue));
-  v->kind_ = function;  
-  MLfun* prim = initialise_fun(); 
-  prim->invoke = &get_tail;
-  v->value.asFun = prim;
-  v->print = &print_fun;	
-  return v; 
+  	MLvalue *v = (MLvalue*)malloc(sizeof (MLvalue));
+  	v->kind_ = function;  
+  	MLfun* prim = initialise_fun(); 
+  	prim->invoke = &get_tail;
+  	v->value.asFun = prim;
+  	v->print = &print_fun;	
+  	return v; 
 }
 
 MLvalue* initialise_first () {
-  MLvalue *v = (MLvalue*)malloc(sizeof (MLvalue));
-  v->kind_ = function; 
-  MLfun* prim = initialise_fun();
-  prim->invoke = &get_tail;
-  v->value.asFun = prim;
-  v->print = &print_fun;	
-  return v; 
+  	MLvalue *v = (MLvalue*)malloc(sizeof (MLvalue));
+  	v->kind_ = function; 
+  	MLfun* prim = initialise_fun();
+  	prim->invoke = &get_tail;
+  	v->value.asFun = prim;
+  	v->print = &print_fun;	
+  	return v; 
 }
 
 MLvalue* initialise_second () {
-  MLvalue *v = (MLvalue*)malloc(sizeof (MLvalue));
-  v->kind_ = function; 
-  MLfun* prim = initialise_fun();
-  prim->invoke = &get_tail;
-  v->value.asFun = prim;
-  v->print = &print_fun;	
-  return v; 
+  	MLvalue *v = (MLvalue*)malloc(sizeof (MLvalue));
+  	v->kind_ = function; 
+  	MLfun* prim = initialise_fun();
+  	prim->invoke = &get_tail;
+  	v->value.asFun = prim;
+  	v->print = &print_fun;	
+  	return v; 
 }
 
